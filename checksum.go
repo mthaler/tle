@@ -82,3 +82,52 @@ func isChecksumValid(line string) (bool, error) {
 
 	return checksum == calculatedChecksum, nil
 }
+
+/**
+ * Calculates the checksum for a given line.
+ * <p>
+ * The checksum for the line is calculated by adding all numerical digits, including the line
+ * number. 1 is added to the checksum for each negative sign (−) on that line. All other
+ * non-digit characters are ignored.
+ *
+ * @param line the line to be computed for its checksum, omitting the checksum digit. If the
+ * checksum digit is included in the line, the result will be invalid.
+ * @return the checksum mod 10
+ */
+func calculateChecksum(line string) (int, error) {
+	checksum := 0
+	for _, c := range []rune(line) {
+		switch c {
+		case '-':
+			checksum += 1
+			continue
+		case '1':
+			checksum += 1
+			continue
+		case '2':
+			checksum += 2
+			continue
+		case '3':
+			checksum += 3
+			continue
+		case '4':
+			checksum += 4
+			continue
+		case '5':
+			checksum += 5
+			continue
+		case '6':
+			checksum += 6
+			continue
+		case '7':
+			checksum += 7
+			continue
+		case '8':
+			checksum += 8
+			continue
+		case '9':
+			checksum += 9
+		}
+	}
+	return checksum % 10, nil
+}
