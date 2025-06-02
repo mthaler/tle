@@ -12,7 +12,6 @@ const LINE_LENGTH = 69
 const CHECKSUM_INDEX = 68
 
 func generateChecksum(line string) (int, error) {
-
 	line = strings.TrimSpace(line)
 
 	length := utf8.RuneCountInString(line)
@@ -52,4 +51,34 @@ func parseChecksum(line string) (int, error) {
 	c := []rune(line)[CHECKSUM_INDEX]
 
 	return strconv.Atoi(string(c))
+}
+
+/**
+ * Verifies the checksum for a line in a TLE.
+ *
+ * @param line the entire line of the TLE (including the checksum digit)
+ * @return <code>true</code> if the checksum if valid, <code>false</code> otherwise
+ * @throws IllegalArgumentException if <code>line</code> is <code>null</code> or if the line is
+ * not 69 characters in length
+ */
+func isChecksumValid(line string) (bool, error) {
+	line = strings.TrimSpace(line)
+
+	length := utf8.RuneCountInString(line)
+
+	if length != CHECKSUM_INDEX {
+		return false, fmt.Errorf("Invalid line length: must be %d characters, received %d\n", CHECKSUM_INDEX, length)
+	}
+
+	c := []rune(line)[CHECKSUM_INDEX]
+
+	checksum, err := strconv.Atoi(string(c))
+
+	if err != nil {
+		return false, err
+	}
+
+	calculatedChecksum := calculateChecksum(line.substring(0, CHECKSUM_INDEX))
+
+	return checksum == calculatedChecksum, nil
 }
