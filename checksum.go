@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 	"unicode/utf8"
 )
@@ -39,4 +40,16 @@ func getChecksum(line string) (rune, error) {
 	}
 
 	return []rune(line)[CHECKSUM_INDEX], nil
+}
+
+func parseChecksum(line string) (int, error) {
+	length := utf8.RuneCountInString(line)
+
+	if length != LINE_LENGTH {
+		return -1, fmt.Errorf("Line must be 69 characters long: %d\n", length)
+	}
+
+	c := []rune(line)[CHECKSUM_INDEX]
+
+	return strconv.Atoi(string(c))
 }
